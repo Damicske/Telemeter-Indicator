@@ -1,0 +1,141 @@
+***DATASWIATCH FILE CODE***
+---------------------------
+
+                '                Using objReader As New FileIO.TextFieldParser(sFile)
+                '                    objReader.TextFieldType = FileIO.FieldType.Delimited
+                '                    objReader.SetDelimiters(";")
+
+                '                    Dim sStream As String()
+                '                    Do
+                '                        sStream = objReader.ReadFields
+                '                        '-old data check
+                '                        If sStream(0).IndexOf("|") > -1 Then
+                '                            Add2Log("TeleGrafiek::DataSwitch: Found OLD data, converting it")
+                '                            Add2Log("FILE: " & sFile, False)
+                '                            Dim sLine As String, sFileOut(0) As String, sChk() As String
+
+                '                            '-first line check
+                '                            sFileOut(0) = sStream(0).Replace("-", ";").Replace("|", ";")
+                '                            '-rest of the lines
+                '                            Do
+                '                                ReDim Preserve sFileOut(sFileOut.Length)
+                '                                sFileOut(sFileOut.Length - 1) = objReader.ReadLine.Replace("-", ";").Replace("|", ";")
+                '                            Loop Until objReader.EndOfData
+                '                            objReader.Close()
+                '                            objReader.Dispose()
+
+                '#Region "do the day limit"
+                '                            Dim iLimit As Long = pData.Usage_MBLimit
+                '                            For i = 0 To sFileOut.Length - 1
+                '                                sChk = sFileOut(i).Split(New Char() {";"c})
+                '                                For j = 1 To 8 - sChk.Length
+                '                                    sFileOut(i) &= ";" & CInt(iLimit / (sFileOut.Length - i))
+                '                                Next j
+                '                                iLimit -= (CInt(sChk(4)) + CInt(sChk(5))) 'iUsage
+                '                            Next i
+                '#End Region
+                '#Region "save it to the file"
+                '                            Try
+                '                                Using objWriter As New StreamWriter(sFile, False)
+                '                                    For i = 0 To sFileOut.Length - 1
+                '                                        objWriter.WriteLine(sFileOut(i))
+                '                                    Next i
+                '                                End Using
+                '                                Add2Log("Saved succesfully", False)
+                '                            Catch ex As Exception
+                '                                Add2Log("TeleGrafiek::DataSwitch::ERR: " & ex.Message, False)
+                '                            End Try
+                '#End Region
+                '                            sLine = Nothing
+                '                            sChk = Nothing
+                '                            sFileOut = Nothing
+                '                            DataSwitch(sFile)
+                '                            Exit Sub
+                '                        End If
+
+                '                        If iCount > gGraph_Basic.Length - 1 Then
+                '                            ReDim Preserve gGraph_Day(iCount)
+                '                            ReDim Preserve gGraph_Basic(iCount)
+                '                            ReDim Preserve gGraph_Pay(iCount)
+                '                            ReDim Preserve gGraph_WiFree(iCount)
+                '                            ReDim Preserve gGraph_Extra(iCount)
+                '                            ReDim Preserve gGraph_Limit(iCount)
+                '                        End If
+                '                        If sStream(0) = frmSettings.txtUserId.Text Then
+                '                            gGraph_Day(iCount) = sStream(3)
+                '                            gGraph_Basic(iCount) = CInt(sStream(4))
+                '                            gGraph_Extra(iCount) = CInt(sStream(5))
+                '                            gGraph_Pay(iCount) = 0
+                '                            gGraph_WiFree(iCount) = CInt(sStream(6))
+                '                            If CInt(sStream(7)) <= 0 Then
+                '                                '-recalculate limits
+                '                                objReader.Close()
+                '                                objReader.Dispose()
+
+                '                                Add2Log("TeleGrafiek::DataSwitch: day limit is wrong")
+                '                                Dim sLine As String, sFileOut(0) As String, sChk() As String
+                '                                Using objReader2 As New FileIO.TextFieldParser(sFile)
+                '                                    Do
+                '                                        sFileOut(sFileOut.Length - 1) = objReader2.ReadLine
+                '                                        ReDim Preserve sFileOut(sFileOut.Length)
+                '                                    Loop Until objReader2.EndOfData
+                '                                    ReDim Preserve sFileOut(sFileOut.Length - 2)
+                '                                    objReader2.Close()
+                '                                    objReader2.Dispose()
+                '                                End Using
+                '#Region "do the day limit"
+                '                                Add2Log("Recalculating limit", False)
+                '                                Dim iLimit As Long = pData.Usage_MBLimit
+                '                                For i = 0 To sFileOut.Length - 1
+                '                                    If sFileOut(i) IsNot Nothing Then
+                '                                        sChk = sFileOut(i).Split(New Char() {";"c})
+                '                                        sChk(7) = CInt(iLimit / (sFileOut.Length - i)).ToString
+                '                                        iLimit -= (CInt(sChk(4)) + CInt(sChk(5)))
+                '                                        sFileOut(i) = sChk(0) & ";" & sChk(1) & ";" & sChk(2) & ";" & sChk(3) & ";" & sChk(4) & ";" & sChk(5) & ";" & sChk(6) & ";" & sChk(7)
+                '                                    End If
+                '                                Next i
+                '#End Region
+                '#Region "save it to the file"
+                '                                Try
+                '                                    Using objWriter As New StreamWriter(sFile, False)
+                '                                        For i = 0 To sFileOut.Length - 1
+                '                                            objWriter.WriteLine(sFileOut(i))
+                '                                        Next i
+                '                                    End Using
+                '                                    Add2Log("Saved succesfully", False)
+                '                                Catch ex As Exception
+                '                                    Add2Log("ERR: " & ex.Message, False)
+                '                                End Try
+                '#End Region
+                '                                sLine = Nothing
+                '                                sChk = Nothing
+                '                                sFileOut = Nothing
+                '                                DataSwitch(sFile)
+                '                                Exit Sub
+                '                            End If
+
+                '                            gGraph_Limit(iCount) = CInt(sStream(7))
+                '                            If basic_volume_max < gGraph_Basic(iCount) Then basic_volume_max = gGraph_Basic(iCount)
+                '                            If extra_volume_max < gGraph_Extra(iCount) Then extra_volume_max = gGraph_Extra(iCount)
+                '                            If payg_volume_max < gGraph_Pay(iCount) Then payg_volume_max = gGraph_Pay(iCount)
+                '                            If wifree_volume_max < gGraph_WiFree(iCount) Then wifree_volume_max = gGraph_WiFree(iCount)
+                '                        Else
+                '                            gGraph_Day(iCount) = "Error"
+                '                            gGraph_Basic(iCount) = 0
+                '                            gGraph_Extra(iCount) = 0
+                '                            gGraph_Pay(iCount) = 0
+                '                            gGraph_WiFree(iCount) = 0
+                '                            gGraph_Limit(iCount) = 0
+                '                        End If
+                '                        iCount = CShort(iCount + 1)
+                '                    Loop Until objReader.EndOfData
+                '                End Using
+                'iCount = CShort(iCount - 1)
+                'If iCount < (gGraph_Basic.Length - 1) Then
+                '    ReDim Preserve gGraph_Day(iCount)
+                '    ReDim Preserve gGraph_Basic(iCount)
+                '    ReDim Preserve gGraph_Pay(iCount)
+                '    ReDim Preserve gGraph_WiFree(iCount)
+                '    ReDim Preserve gGraph_Extra(iCount)
+                '    ReDim Preserve gGraph_Limit(iCount)
+                'End If
