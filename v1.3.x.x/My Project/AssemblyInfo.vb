@@ -1,0 +1,40 @@
+﻿Imports System.Resources
+
+Imports System
+Imports System.Reflection
+Imports System.Runtime.InteropServices
+
+' General Information about an assembly is controlled through the following 
+' set of attributes. Change these attribute values to modify the information
+' associated with an assembly.
+
+' Review the values of the assembly attributes
+
+<Assembly: AssemblyTitle("Telemeter Indicator")> 
+<Assembly: AssemblyDescription("Haalt de gegevens van je Telenet internet gebruik op en verwerkt deze in een mooie systray icoon.")> 
+<Assembly: AssemblyCompany("CD-PC")> 
+<Assembly: AssemblyProduct("Telemeter Indicator.NET")> 
+<Assembly: AssemblyCopyright("Copyright © CD-PC 2017")> 
+<Assembly: AssemblyTrademark("")> 
+
+<Assembly: ComVisible(False)> 
+
+'The following GUID is for the ID of the typelib if this project is exposed to COM
+<Assembly: Guid("4a8c3efd-edfb-4874-a166-37abb01522c0")> 
+
+' Version information for an assembly consists of the following four values:
+'
+'      Major Version
+'      Minor Version 
+'      Build Number
+'      Revision
+'
+' You can specify all the values or you can default the Build and Revision Numbers 
+' by using the '*' as shown below:
+' <Assembly: AssemblyVersion("1.0.*")> 
+
+<Assembly: AssemblyVersion("1.0.8.0")> 
+'<Assembly: AssemblyFileVersion("1.1")> 
+
+'<Assembly: NeutralResourcesLanguageAttribute("nl")> 
+<Assembly: AssemblyFileVersionAttribute("1.0.8.0")> 
